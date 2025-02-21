@@ -180,27 +180,25 @@ const puhsNtfy = (title, desp) => {
         return;
     }
     const data = desp;
-    superagent
+    const req = superagent
         .post(ntfy.url + "/" + ntfy.topic)
         .set("Title", title)
-        .then((res) => {
-            if (ntfy.url && ntfy.topic) {
-                req.set("Authorization", "Basic " + Buffer.from(ntfy.username + ":" + nfyt.password).toString("base64"));
-            }
-            return res.send(data);
-        })
-        .end((err, res) => {
-            if (err) {
-                logger.error(`Ntfy推送失败:${JSON.stringify(err)}`);
-                return;
-            }
-            const json = JSON.parse(res.text);
-            if (!json.id) {
-                logger.error(`Ntfy推送失败:${JSON.stringify(json)}`);
-            } else {
-                logger.info("Ntfy推送成功");
-            }
-        });
+        .send(data);
+    if (ntfy.url && ntfy.topic && ntfy.username && ntfy.password) {
+        req.set("Authorization", "Basic " + Buffer.from(ntfy.username + ":" + ntfy.password).toString("base64"));
+    }
+    req.end((err, res) => {
+        if (err) {
+            logger.error(`Ntfy推送失败:${JSON.stringify(err)}`);
+            return;
+        }
+        const json = JSON.parse(res.text);
+        if (!json.id) {
+            logger.error(`Ntfy推送失败:${JSON.stringify(json)}`);
+        } else {
+            logger.info("Ntfy推送成功");
+        }
+    });
 };
 
 const pushWxPusher = (title, desp) => {
