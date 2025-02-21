@@ -266,6 +266,7 @@ const push = (title, desp) => {
     pushWecomBot(title, desp);
     pushWxPusher(title, desp);
     pushPlusPusher(title, desp);
+    puhsNtfy(title, desp);
 };
 
 // 开始执行程序
