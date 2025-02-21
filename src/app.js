@@ -182,7 +182,7 @@ const puhsNtfy = (title, desp) => {
     const data = desp;
     const req = superagent
         .post(ntfy.url + "/" + ntfy.topic)
-        .set("Title", title)
+        .set("title", title)
         .send(data);
     if (ntfy.url && ntfy.topic && ntfy.username && ntfy.password) {
         req.set("Authorization", "Basic " + Buffer.from(ntfy.username + ":" + ntfy.password).toString("base64"));
