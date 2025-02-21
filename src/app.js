@@ -176,13 +176,19 @@ const pushWecomBot = (title, desp) => {
 };
 
 const puhsNtfy = (title, desp) => {
+    function encodeRFC2047(text) {
+        const encodedBase64 = Buffer.from(text).toString('base64');
+        return `=?utf-8?B?${encodedBase64}?=`;
+    }
+
     if (!(ntfy.url && ntfy.topic)) {
         return;
     }
     const data = desp;
     const req = superagent
         .post(ntfy.url + "/" + ntfy.topic)
-        .set("title", title)
+        .set("Title", encodeRFC2047(title))
+        .set("Priority", "3")
         .send(data);
     if (ntfy.url && ntfy.topic && ntfy.username && ntfy.password) {
         req.set("Authorization", "Basic " + Buffer.from(ntfy.username + ":" + ntfy.password).toString("base64"));
