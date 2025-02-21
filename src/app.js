@@ -189,7 +189,6 @@ const puhsNtfy = (title, desp) => {
             }
             return res.send(data);
         })
-        .send(data)
         .end((err, res) => {
             if (err) {
                 logger.error(`Ntfy推送失败:${JSON.stringify(err)}`);
